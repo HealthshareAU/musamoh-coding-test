@@ -11,12 +11,14 @@ let existingUsers = {
     9: {
         firstName: 'Billy',
         email: 'billy@gmail.com',
-        password: 'ilikeicecream123'
+        password: 'ilikeicecream123',
+        favouriteFruit: 'Mango'
     },
     2: {
         firstName: 'Jimmy',
         email: 'jimmy@gmail.com',
-        password: 'iamnotfondoficecream1234'
+        password: 'iamnotfondoficecream1234',
+        favouriteFruit: 'Apple'
     },
 };
 
@@ -58,6 +60,7 @@ app.post('/api/users/', userValidation, (request, response) => {
         firstName: request.body.firstName,
         email: request.body.email,
         password: request.body.password,
+        favouriteFruit: request.body.favouriteFruit,
     };
     const id = Math.floor(Math.random() * 20);
     existingUsers[id] = user;

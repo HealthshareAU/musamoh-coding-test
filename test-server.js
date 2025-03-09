@@ -42,7 +42,7 @@ describe('test server', function () {
             firstName: 'Timmy',
             email: 'Timmy@gmail.com',
             password: 'password123',
-            favourite_fruit: 'Banana',
+            favouriteFruit: 'Banana',
         };
         request(server).post(
             '/api/users/'
