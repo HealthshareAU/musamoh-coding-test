@@ -8,12 +8,12 @@ class App extends React.Component {
         this.state = {
             id: '',
             user: {
-                first_name: '',
+                firstName: '',
                 email: '',
                 password: '',
             },
             registerUser: {
-                first_name: '',
+                firstName: '',
                 email: '',
                 password: '',
             },
@@ -87,7 +87,7 @@ class App extends React.Component {
                 </header>
                 <div>
                     <p className="app-intro">
-                        Name: {this.state.user.first_name}
+                        Name: {this.state.user.firstName}
                     </p>
                     <p className="app-intro">
                         Email: {this.state.user.email}
@@ -101,9 +101,9 @@ class App extends React.Component {
                 </div>
                 <form onSubmit={this.createUser}>
                     <label>First Name</label>
-                    <input name="first_name" onChange={this.handleInputChange}/>
+                    <input name="firstName" onChange={this.handleInputChange}/>
                     <label>Email</label>
-                    <input name="email_address" onChange={this.handleInputChange}/>
+                    <input name="email" onChange={this.handleInputChange}/>
                     <label>Password</label>
                     <input name="password" onChange={this.handleInputChange}/>
                     <button type="submit">Create User</button>

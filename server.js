@@ -22,7 +22,7 @@ let existingUsers = {
 
 const userValidation = [
     check(
-        'first_name'
+        'firstName'
     ).exists().withMessage('You must include a first name'),
     check('email').isEmail().withMessage('Must include email'),
     check(
@@ -55,7 +55,7 @@ app.post('/api/users/', userValidation, (request, response) => {
     }
 
     const user = {
-        firstName: request.body.first_name,
+        firstName: request.body.firstName,
         email: request.body.email,
         password: request.body.password,
     };
