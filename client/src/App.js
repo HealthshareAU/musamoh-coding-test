@@ -8,14 +8,16 @@ class App extends React.Component {
         this.state = {
             id: '',
             user: {
-                first_name: '',
+                firstName: '',
                 email: '',
                 password: '',
+                favouriteFruit: '',
             },
             registerUser: {
-                first_name: '',
+                firstName: '',
                 email: '',
                 password: '',
+                favouriteFruit: 'Apple',
             },
         };
 
@@ -87,10 +89,13 @@ class App extends React.Component {
                 </header>
                 <div>
                     <p className="app-intro">
-                        Name: {this.state.user.first_name}
+                        Name: {this.state.user.firstName}
                     </p>
                     <p className="app-intro">
                         Email: {this.state.user.email}
+                    </p>
+                    <p className="app-intro">
+                        Favourite Fruit: {this.state.user.favouriteFruit}
                     </p>
                     <input value={this.state.id} onChange={this.handleIdChange}/>
                     <button
@@ -101,11 +106,18 @@ class App extends React.Component {
                 </div>
                 <form onSubmit={this.createUser}>
                     <label>First Name</label>
-                    <input name="first_name" onChange={this.handleInputChange}/>
+                    <input name="firstName" onChange={this.handleInputChange}/>
                     <label>Email</label>
-                    <input name="email_address" onChange={this.handleInputChange}/>
+                    <input name="email" onChange={this.handleInputChange}/>
                     <label>Password</label>
                     <input name="password" onChange={this.handleInputChange}/>
+                    <label>Favourite Fruit</label>
+                    <select name="favouriteFruit" onChange={this.handleInputChange} value={this.state.registerUser.favouriteFruit}>
+                        <option value="Apple">Apple</option>
+                        <option value="Banana">Banana</option>
+                        <option value="Apricot">Apricot</option>
+                        <option value="Mango">Mango</option>
+                    </select>
                     <button type="submit">Create User</button>
                 </form>
             </div>

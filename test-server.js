@@ -26,20 +26,23 @@ describe('test server', function () {
             firstName: 'Jimmy',
             email: 'jimmy@gmail.com',
             password: 'iamnotfondoficecream1234',
+            favouriteFruit: 'Apple',
         };
         request(server).get('/api/get-user/2').expect(200).end((err, res) => {
             expect(res.body.user.firstName).to.equal(user.firstName);
             expect(res.body.user.email).to.equal(user.email);
             expect(res.body.user.password).to.equal(user.password);
+            expect(res.body.user.favouriteFruit).to.equal(user.favouriteFruit);
             done();
         });
     });
 
     it('posts a user', (done) => {
         const user = {
-            first_name: 'Timmy',
+            firstName: 'Timmy',
             email: 'Timmy@gmail.com',
             password: 'password123',
+            favouriteFruit: 'Banana',
         };
         request(server).post(
             '/api/users/'
