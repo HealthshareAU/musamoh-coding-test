@@ -1,7 +1,6 @@
 const express = require('express');
-const {check, validationResult} = require('express-validator/check');
+const { body, validationResult } = require('express-validator');
 const bodyParser = require('body-parser');
-
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,64 +10,84 @@ let existingUsers = {
     9: {
         firstName: 'Billy',
         email: 'billy@gmail.com',
-        password: 'ilikeicecream123'
+        password: 'ilikeicecream123',
+        favoriteFruit: 'Mango'
     },
     2: {
         firstName: 'Jimmy',
         email: 'jimmy@gmail.com',
-        password: 'iamnotfondoficecream1234'
+        password: 'iamnotfondoficecream1234',
+        favoriteFruit: 'Apple'
     },
 };
 
 const userValidation = [
-    check(
-        'first_name'
-    ).exists().withMessage('You must include a first name'),
-    check('email').isEmail().withMessage('Must include email'),
-    check(
-        'password'
-    ).isLength({min: 8}).withMessage('Password must be at least 8 characters'),
+    body('firstName')
+        .exists()
+        .withMessage('You must include a first name'),
+    body('email')
+        .isEmail()
+        .withMessage('Must include email'),
+    body('password')
+        .isLength({min: 8})
+        .withMessage('Password must be at least 8 characters'),
 ];
 
 app.get('/api/home/', (request, response) => {
-    response.send({content: 'Hello From Server'})
+    response.json({content: 'Hello From Server'});
 });
-
 
 app.get('/api/get-user/:id([0-9]{1})', (request, response) => {
     const id = request.params.id;
-    let user = null;
-    try {
-        user = existingUsers[id];
-    } catch(err) {
-        response.status(404).send({errors: ['User not found']});
+    const user = existingUsers[id];
+    
+    if (!user) {
+        return response.status(404).json({
+            errors: [`User with ID ${id} not found`]
+        });
     }
-
-    response.send({user})
+    
+    return response.json({ user });
 });
 
 app.post('/api/users/', userValidation, (request, response) => {
     const errors = validationResult(request);
     if(!errors.isEmpty()) {
-        response.status(404).send({errors: errors.mapped()});
-        return;
+        return response.status(400).json({errors: errors.mapped()});
     }
 
     const user = {
-        firstName: request.body.first_name,
+        firstName: request.body.firstName,
         email: request.body.email,
         password: request.body.password,
+        favoriteFruit: request.body.favoriteFruit || 'Apple', // Default to Apple if not provided
     };
     const id = Math.floor(Math.random() * 20);
     existingUsers[id] = user;
 
-    response.send({
+    return response.status(201).json({
         user,
         message: 'User created successfully',
         id,
-    })
+    });
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        errors: ['Internal Server Error']
+    });
+});
 
-module.exports = app.listen(
-    port, () => console.log(`Listening on port ${port}`));
+const server = app.listen(port, () => console.log(`Listening on port ${port}`))
+    .on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${port} is busy. Trying ${port + 1}...`);
+            server.listen(port + 1);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
+
+module.exports = server;
